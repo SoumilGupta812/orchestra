@@ -1,0 +1,7 @@
+ERROR [portable_pty::win::psuedocon] CreateProcessW `"C:\\nodejs\\npm run dev\0"` in cwd `Some("C:\\soumil\\NextJs\\N8N_clone\\orchestra\0")` failed: %1 is not a valid Win32 application. (os error 193)
+ERROR [portable_pty::win::psuedocon] CreateProcessW `"C:\\nodejs\\npm run dev\0"` in cwd `Some("C:\\soumil\\NextJs\\N8N_clone\\orchestra\0")` failed: %1 is not a valid Win32 application. (os error 193)
+ERROR [portable_pty::win::psuedocon] CreateProcessW `"C:\\nodejs\\npm run dev\0"` in cwd `Some("C:\\soumil\\NextJs\\N8N_clone\\orchestra\0")` failed: %1 is not a valid Win32 application. (os error 193)
+ERROR [portable_pty::win::psuedocon] CreateProcessW `"C:\\nodejs\\npm run dev\0"` in cwd `Some("C:\\soumil\\NextJs\\N8N_clone\\orchestra\0")` failed: %1 is not a valid Win32 application. (os error 193)
+ERROR [lib::error] Error: channel closed
+ERROR [portable_pty::win::psuedocon] CreateProcessW `"C:\\nodejs\\npm run dev\0"` in cwd `Some("C:\\soumil\\NextJs\\N8N_clone\\orchestra\0")` failed: %1 is not a valid Win32 application. (os error 193)
+ERROR [lib::error] Error: channel closed

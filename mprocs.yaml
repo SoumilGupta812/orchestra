@@ -1,0 +1,5 @@
+procs:
+  dev:
+    cmd: ["C:\\nodejs\\npm.cmd", "run", "dev"]
+  inngest:
+    cmd: ["C:\\nodejs\\npm.cmd", "run", "inngest:dev"]
