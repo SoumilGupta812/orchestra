@@ -5,7 +5,7 @@ import { caller } from "@/trpc/server";
 import { Button } from "@base-ui/react";
 
 export default async function Home() {
-  // await requireAuth();
+  await requireAuth();
   const data = await caller.getUsers();
   return (
     <div className="min-h-screen min-w-screen flex items-center justify-center">

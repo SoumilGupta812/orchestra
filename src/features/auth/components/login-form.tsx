@@ -76,7 +76,13 @@ export function LoginForm() {
                     variant="outline"
                     className="w-full"
                   >
-                    Continue with Github
+                    <Image
+                      src="/logos/github.svg"
+                      width={20}
+                      height={20}
+                      alt="GitHub logo"
+                    />
+                    Continue with GitHub
                   </Button>
                   <Button
                     type="button"
@@ -84,6 +90,12 @@ export function LoginForm() {
                     variant="outline"
                     className="w-full"
                   >
+                    <Image
+                      src="/logos/google.svg"
+                      width={20}
+                      height={20}
+                      alt="Google logo"
+                    />
                     Continue with Google
                   </Button>
                 </div>
