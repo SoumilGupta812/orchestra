@@ -8,9 +8,16 @@ import {
   WorkflowsContainer,
   WorkflowsList,
 } from "@/features/workflows/components/workflows";
-export default async function Workflows() {
+import type { SearchParams } from "nuqs/server";
+import { workflowParamsLoader } from "@/features/workflows/server/params-loader";
+type PageProps = {
+  searchParams: Promise<SearchParams>;
+};
+
+export default async function Workflows({ searchParams }: PageProps) {
   await requireAuth();
-  prefetchWorkflows();
+  const params = await workflowParamsLoader(searchParams);
+  prefetchWorkflows(params);
   return (
     <WorkflowsContainer>
       <HydrateClient>
