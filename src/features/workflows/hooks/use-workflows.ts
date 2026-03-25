@@ -40,6 +40,33 @@ export const useRemoveWorkflow = () => {
         toast.success(`Workflow ${data.name} removed`);
         queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}));
       },
+      onError: (data) => {
+        toast.error(`Failed to remove workflow: ${data.message}`);
+      },
+    }),
+  );
+};
+
+export const useSuspenseWorkflow = (id: string) => {
+  const trpc = useTRPC();
+  return useSuspenseQuery(trpc.workflows.getOne.queryOptions({ id }));
+};
+export const useUpdateWorkflowName = () => {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  return useMutation(
+    trpc.workflows.updateName.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(`Workflow ${data.name} updated`);
+
+        queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}));
+        queryClient.invalidateQueries(
+          trpc.workflows.getOne.queryOptions({ id: data.id }),
+        );
+      },
+      onError: (data) => {
+        toast.error(`Failed to update workflow: ${data.message}`);
+      },
     }),
   );
 };
