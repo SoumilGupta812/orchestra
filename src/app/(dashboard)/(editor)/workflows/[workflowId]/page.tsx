@@ -23,7 +23,7 @@ async function WorkflowPage({ params }: PageProps) {
       <ErrorBoundary fallback={<EditorError />}>
         <Suspense fallback={<EditorLoading />}>
           <EditorHeader workflowId={workflowId} />
-          <main className="fledx-1">
+          <main className="flex-1">
             <Editor workflowId={workflowId} />
           </main>
         </Suspense>
