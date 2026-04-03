@@ -85,7 +85,20 @@ export const useUpdateWorkflow = () => {
         );
       },
       onError: (data) => {
-        toast.error(`Failed to save update workflow: ${data.message}`);
+        toast.error(`Failed to update workflow: ${data.message}`);
+      },
+    }),
+  );
+};
+export const useExecuteWorkflow = () => {
+  const trpc = useTRPC();
+  return useMutation(
+    trpc.workflows.execute.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(`Workflow ${data.name} executed`);
+      },
+      onError: (data) => {
+        toast.error(`Failed to execute workflow: ${data.message}`);
       },
     }),
   );
