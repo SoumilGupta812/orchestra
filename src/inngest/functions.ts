@@ -41,6 +41,9 @@ export const executeWorkflow = inngest.createFunction(
         step,
       });
     }
-    return { workflowId, result: context };
+    return {
+      workflowId,
+      result: context,
+    };
   },
 );

@@ -35,6 +35,13 @@ import { useEffect } from "react";
 import { on } from "events";
 import { Button } from "@base-ui/react";
 const FormSchema = z.object({
+  variableName: z
+    .string()
+    .min(1, "Variable name is required")
+    .regex(
+      /^[a-zA-Z_][a-zA-Z0-9_]*$/,
+      "Variable name must be a valid identifier",
+    ),
   endpoint: z.url("Please enter a valid URL"),
   method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
   body: z.string().optional(),
@@ -56,11 +63,13 @@ export const HttpRequestDialog = ({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      variableName: defaultValue.variableName || "",
       endpoint: defaultValue.endpoint || "",
       method: defaultValue.method || "GET",
       body: defaultValue.body || "",
     },
   });
+  const watchVariableName = form.watch("variableName") || "myApiCall";
   const watchMethod = form.watch("method");
   const showBody = watchMethod !== "GET" && watchMethod !== "DELETE";
   const handleSubmit = (values: z.infer<typeof FormSchema>) => {
@@ -70,6 +79,7 @@ export const HttpRequestDialog = ({
   useEffect(() => {
     if (open) {
       form.reset({
+        variableName: defaultValue.variableName || "",
         endpoint: defaultValue.endpoint || "",
         method: defaultValue.method || "GET",
         body: defaultValue.body || "",
@@ -91,6 +101,26 @@ export const HttpRequestDialog = ({
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-8 mt-4"
           >
+            <FormField
+              control={form.control}
+              name="variableName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Variable Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="myApiCall" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Use this variable name to reference the response of this
+                    HTTP request in subsequent nodes. For example, if you set
+                    the variable name to {`${watchVariableName}`}, you can
+                    access the response data in later nodes using{" "}
+                    {`{{${watchVariableName}.httpResponse.data}}`}.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="method"
