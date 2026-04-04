@@ -1,10 +1,19 @@
 import type { NodeExecutor } from "@/features/executions/types";
 import { NonRetriableError } from "inngest";
 import ky, { type Options as KyOptions } from "ky";
+import Handlebars from "handlebars";
+Handlebars.registerHelper("json", (context) => {
+  try {
+    const jsonString = JSON.stringify(context);
+    return new Handlebars.SafeString(jsonString);
+  } catch (error) {
+    throw new Error("Failed to stringify JSON in Handlebars helper: " + error);
+  }
+});
 type HttpRequestData = {
-  variableName?: string;
-  endpoint?: string;
-  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  variableName: string;
+  endpoint: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: string;
 };
 
@@ -26,14 +35,29 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
       "HTTP Request Node : Variable name is required",
     );
   }
+  if (!data.method) {
+    throw new NonRetriableError("HTTP Request Node : HTTP method is required");
+  }
   const result = await step.run("http-request", async () => {
-    const method = data.method || "GET";
-    const endpoint = data.endpoint!;
+    const method = data.method;
+    let endpoint: string;
+    try {
+      endpoint = Handlebars.compile(data.endpoint)(context);
+      if (typeof endpoint !== "string" || !endpoint) {
+        throw new Error("Endpoint must be a non-empty string after templating");
+      }
+    } catch (error) {
+      throw new NonRetriableError(
+        "Failed to compile endpoint template: " + error,
+      );
+    }
     const options: KyOptions = {
       method,
     };
     if (["POST", "PUT", "PATCH"].includes(method)) {
-      options.body = data.body;
+      const resolved = Handlebars.compile(data.body || "{}")(context);
+      JSON.parse(resolved);
+      options.body = resolved;
       options.headers = {
         "Content-Type": "application/json",
       };
