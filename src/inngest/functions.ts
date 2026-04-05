@@ -9,6 +9,7 @@ export const executeWorkflow = inngest.createFunction(
   {
     id: "execute-workflow",
     triggers: [{ event: "workflows/execute.workflow" }],
+    retries: 0, //change it in production, you might want to have some retries for transient errors
   },
   async ({ event, step }) => {
     const workflowId = event.data.workflowId;
