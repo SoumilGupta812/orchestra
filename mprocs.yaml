@@ -3,3 +3,5 @@ procs:
     cmd: ["C:\\nodejs\\npm.cmd", "run", "dev"]
   inngest:
     cmd: ["C:\\nodejs\\npm.cmd", "run", "inngest:dev"]
+  ngrok:
+    cmd: ["C:\\nodejs\\npm.cmd", "run", "ngrok:dev"]

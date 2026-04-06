@@ -42,7 +42,7 @@ const FormSchema = z.object({
       /^[a-zA-Z_][a-zA-Z0-9_]*$/,
       "Variable name must be a valid identifier",
     ),
-  endpoint: z.url("Please enter a valid URL"),
+  endpoint: z.string().min(1, "Please enter a valid URL"),
   method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
   body: z.string().optional(),
 });

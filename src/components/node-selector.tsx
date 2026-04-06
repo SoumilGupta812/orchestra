@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/sheet";
 import { NodeType } from "@/generated/prisma/enums";
 import { Separator } from "./ui/separator";
-import { set } from "zod";
 
 export type NodeTypeOption = {
   label: string;
@@ -28,6 +27,12 @@ const triggerNodes: NodeTypeOption[] = [
     description: "Trigger the flow manually",
     icon: MousePointerIcon,
     type: NodeType.MANUAL_TRIGGER,
+  },
+  {
+    label: "Google Form",
+    description: "Runs the flow when Google Form is submitted",
+    icon: "/logos/googleform.svg",
+    type: NodeType.GOOGLE_FORM_TRIGGER,
   },
 ];
 const executionNodes: NodeTypeOption[] = [
