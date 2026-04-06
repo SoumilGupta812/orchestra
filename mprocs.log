@@ -5,3 +5,4 @@ called `Option::unwrap()` on a `None` value
 @stackTrace:disabled backtrace
 ERROR [lib::error] Error: channel closed
 ERROR [lib::error] Error: channel closed
+ERROR [lib::error] Error: channel closed

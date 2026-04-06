@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
+    "ngrok:dev": " ngrok http 3000",
     "inngest:dev": "inngest-cli dev",
     "dev:all": "mprocs"
   },
