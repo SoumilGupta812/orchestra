@@ -12,9 +12,9 @@ Handlebars.registerHelper("json", (context) => {
   }
 });
 type HttpRequestData = {
-  variableName: string;
-  endpoint: string;
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  variableName?: string;
+  endpoint?: string;
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: string;
 };
 
@@ -32,31 +32,33 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
     status: "loading",
     nodeId,
   });
-  if (!data.endpoint) {
-    await step.realtime.publish(`${nodeId}-error`, ch.status, {
-      status: "error",
-      nodeId,
-    });
-    throw new NonRetriableError("HTTP Request Node : No Endpoint Provided");
-  }
-  if (!data.variableName) {
-    await step.realtime.publish(`${nodeId}-error`, ch.status, {
-      status: "error",
-      nodeId,
-    });
-    throw new NonRetriableError(
-      "HTTP Request Node : Variable name is required",
-    );
-  }
-  if (!data.method) {
-    await step.realtime.publish(`${nodeId}-error`, ch.status, {
-      status: "error",
-      nodeId,
-    });
-    throw new NonRetriableError("HTTP Request Node : HTTP method is required");
-  }
   try {
     const result = await step.run("http-request", async () => {
+      if (!data.endpoint) {
+        await step.realtime.publish(`${nodeId}-error`, ch.status, {
+          status: "error",
+          nodeId,
+        });
+        throw new NonRetriableError("HTTP Request Node : No Endpoint Provided");
+      }
+      if (!data.variableName) {
+        await step.realtime.publish(`${nodeId}-error`, ch.status, {
+          status: "error",
+          nodeId,
+        });
+        throw new NonRetriableError(
+          "HTTP Request Node : Variable name is required",
+        );
+      }
+      if (!data.method) {
+        await step.realtime.publish(`${nodeId}-error`, ch.status, {
+          status: "error",
+          nodeId,
+        });
+        throw new NonRetriableError(
+          "HTTP Request Node : HTTP method is required",
+        );
+      }
       const method = data.method;
       let endpoint: string;
       try {
