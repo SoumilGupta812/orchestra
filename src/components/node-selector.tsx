@@ -48,6 +48,24 @@ const executionNodes: NodeTypeOption[] = [
     icon: GlobeIcon,
     type: NodeType.HTTP_REQUEST,
   },
+  {
+    label: "Gemini",
+    description: "Uses Google Gemini to generate text",
+    icon: "/logos/gemini.svg",
+    type: NodeType.GEMINI,
+  },
+  {
+    label: "OpenAI",
+    description: "Uses OpenAI to generate text",
+    icon: "/logos/openai.svg",
+    type: NodeType.OPENAI,
+  },
+  {
+    label: "Anthropic",
+    description: "Uses Anthropic to generate text",
+    icon: "/logos/anthropic.svg",
+    type: NodeType.ANTHROPIC,
+  },
 ];
 
 interface NodeSelectorProps {
