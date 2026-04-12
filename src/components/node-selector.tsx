@@ -66,6 +66,18 @@ const executionNodes: NodeTypeOption[] = [
     icon: "/logos/anthropic.svg",
     type: NodeType.ANTHROPIC,
   },
+  {
+    label: "Discord",
+    description: "Send a message to Discord",
+    icon: "/logos/discord.svg",
+    type: NodeType.DISCORD,
+  },
+  {
+    label: "Slack",
+    description: "Send a message to Slack",
+    icon: "/logos/slack.svg",
+    type: NodeType.SLACK,
+  },
 ];
 
 interface NodeSelectorProps {

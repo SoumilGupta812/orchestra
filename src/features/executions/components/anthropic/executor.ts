@@ -22,6 +22,7 @@ type AnthropicData = {
 
 export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({
   nodeId,
+  userId,
   data,
   context,
   step,
@@ -63,6 +64,7 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({
     return prisma.credential.findFirst({
       where: {
         id: data.credentialId,
+        userId,
       },
     });
   });
