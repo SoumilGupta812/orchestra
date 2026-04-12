@@ -22,6 +22,7 @@ type OpenAIData = {
 
 export const openaiExecutor: NodeExecutor<OpenAIData> = async ({
   nodeId,
+  userId,
   data,
   context,
   step,
@@ -63,6 +64,7 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({
     return prisma.credential.findFirst({
       where: {
         id: data.credentialId,
+        userId,
       },
     });
   });
@@ -75,7 +77,6 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({
   }
 
   const openai = createOpenAI({
-    // custom settings, e.g.
     apiKey: credential.value,
     headers: {
       "header-name": "header-value",

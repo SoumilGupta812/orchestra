@@ -22,6 +22,7 @@ type GeminiData = {
 
 export const geminiExecutor: NodeExecutor<GeminiData> = async ({
   nodeId,
+  userId,
   data,
   context,
   step,
@@ -63,6 +64,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({
     return prisma.credential.findFirst({
       where: {
         id: data.credentialId,
+        userId,
       },
     });
   });
