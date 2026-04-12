@@ -2,7 +2,7 @@ import { NonRetriableError } from "inngest";
 import { inngest } from "./client";
 import prisma from "@/lib/db";
 import { topologicalSort } from "./utils";
-import { NodeType } from "@/generated/prisma/enums";
+import { ExecutionStatus, NodeType } from "@/generated/prisma/enums";
 import { getExecutor } from "@/features/executions/lib/executor-registry";
 
 export const executeWorkflow = inngest.createFunction(
@@ -10,12 +10,33 @@ export const executeWorkflow = inngest.createFunction(
     id: "execute-workflow",
     triggers: [{ event: "workflows/execute.workflow" }],
     retries: 0, //change it in production, you might want to have some retries for transient errors
+    onFailure: async ({ event, step }) => {
+      return prisma.execution.update({
+        where: {
+          inngestEventId: event.data.event.id,
+        },
+        data: {
+          status: ExecutionStatus.FAILED,
+          error: event.data.error.message,
+          errorStack: event.data.error.stack,
+        },
+      });
+    },
   },
   async ({ event, step }) => {
     const workflowId = event.data.workflowId;
-    if (!workflowId) {
-      throw new NonRetriableError("Workflow Id is missing");
+    const inngestEventId = event.id;
+    if (!workflowId || !inngestEventId) {
+      throw new NonRetriableError("Workflow Id or Event Id is missing");
     }
+    await step.run("create-execution", async () => {
+      return prisma.execution.create({
+        data: {
+          inngestEventId,
+          workflowId,
+        },
+      });
+    });
     const sortedNodes = await step.run("prepare-workflow", async () => {
       const workflow = await prisma.workflow.findUniqueOrThrow({
         where: {
@@ -55,6 +76,19 @@ export const executeWorkflow = inngest.createFunction(
         step,
       });
     }
+    await step.run("update-execution", async () => {
+      return prisma.execution.update({
+        where: {
+          inngestEventId,
+          workflowId,
+        },
+        data: {
+          status: ExecutionStatus.SUCCESS,
+          completedAt: new Date(),
+          output: context,
+        },
+      });
+    });
     return {
       workflowId,
       result: context,
