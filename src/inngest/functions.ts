@@ -9,7 +9,7 @@ export const executeWorkflow = inngest.createFunction(
   {
     id: "execute-workflow",
     triggers: [{ event: "workflows/execute.workflow" }],
-    retries: 0, //change it in production, you might want to have some retries for transient errors
+    retries: process.env.NODE_ENV === "development" ? 0 : 3, //change it in production, you might want to have some retries for transient errors
     onFailure: async ({ event, step }) => {
       return prisma.execution.update({
         where: {
